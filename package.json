@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "cd src && node-gyp configure build",
     "cli": "ts-node cli_test.ts",
-    "compile": "tsc && xcopy /Y src\\build\\Release\\lzham.node dist\\build\\Release\\",
+    "compile": "tsc && xcopy /Y src\\build\\Release\\lzham.node dist\\build\\Release\\ && xcopy /Y LICENSE.md dist\\",
     "watch": "tsc -w",
     "start": "ts-node ."
   },
