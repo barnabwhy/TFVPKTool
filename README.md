@@ -24,7 +24,7 @@ let vpk = new VPK(vpkDirPath);
 vpk.readTree();
 ```
 ### VPK file reading
-The VPK class is capable of decompressing compressed files (using a native LZHAM addon), comparing CRC32 values on read files (except audio), and adding correct headers to `.wav` files (by reading `.cam` files) so that they can be played back.
+The VPK.readFile method reads individual files to memory and is capable of decompressing compressed files (using a native LZHAM addon), comparing CRC32 values on read files (except audio), and adding correct headers to `.wav` files (by reading `.cam` files) so that they can be played back.
 
 *For multi-threaded file reading to disk use VPKCopy.*
 
