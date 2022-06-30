@@ -86,3 +86,13 @@ copier.close();
 
 console.log("Copying complete")
 ```
+
+## Compiling TFVPKTool
+Run the following:
+```
+npm install
+npm run compile
+```
+You should have a compiled build in `./dist`
+
+If just running with ts-node (`npm start`) compiling is unnecessary.
