@@ -96,3 +96,10 @@ npm run compile
 You should have a compiled build in `./dist`
 
 If just running with ts-node (`npm start`) compiling is unnecessary but `npm install` is.
+
+----
+
+### Notes
+The initial release was made in 2 days, there may be bugs but I tried my best to iron them out.
+
+Thanks to [p0358](https://github.com/p0358/) for help with reversing some of the structs. No thanks to [cra0kalo](https://github.com/cra0kalo/) for keeping VPKTool closed-source.
