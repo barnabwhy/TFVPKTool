@@ -1,0 +1,24 @@
+{
+  "name": "pack_tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "postinstall": "cd tool && node-gyp configure build",
+    "cli": "ts-node cli_test.ts",
+    "compile": "tsc && xcopy /Y tool\\build\\Release\\lzham.node dist\\build\\Release\\",
+    "watch": "tsc -w",
+    "start": "ts-node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "19.0.6",
+    "node-addon-api": "^5.0.0",
+    "ts-node": "^10.8.1"
+  },
+  "dependencies": {
+    "clui": "^0.3.6",
+    "log-with-statusbar": "^1.2.0"
+  }
+}
