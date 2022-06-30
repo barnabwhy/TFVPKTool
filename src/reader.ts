@@ -72,7 +72,6 @@ export class VPKCopy extends EventEmitter {
             if(this.files.length > 0) {
                 this.workerDoCopy(i, this.files.shift() as string)
             } else {
-                console.log("Copied all files");
                 this.mode = VPKCopyMode.NONE;
                 if(this.taskResolve) this.taskResolve();
             }
