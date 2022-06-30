@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "cd tool && node-gyp configure build",
+    "postinstall": "cd src && node-gyp configure build",
     "cli": "ts-node cli_test.ts",
-    "compile": "tsc && xcopy /Y tool\\build\\Release\\lzham.node dist\\build\\Release\\",
+    "compile": "tsc && xcopy /Y src\\build\\Release\\lzham.node dist\\build\\Release\\",
     "watch": "tsc -w",
     "start": "ts-node ."
   },

@@ -1,5 +1,5 @@
-import VPKCopy from "./tool/reader";
-import VPK from "./tool/vpk";
+import VPKCopy from "./src/reader";
+import VPK from "./src/vpk";
 
 var clui = require("clui");
 var thisProgressBar = new clui.Progress(50);
