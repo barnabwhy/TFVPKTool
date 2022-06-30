@@ -95,4 +95,4 @@ npm run compile
 ```
 You should have a compiled build in `./dist`
 
-If just running with ts-node (`npm start`) compiling is unnecessary.
+If just running with ts-node (`npm start`) compiling is unnecessary but `npm install` is.
