@@ -133,5 +133,8 @@ dist
 .vscode
 .vs
 
+# LZHAM addon build
+src/build
+
 # Output folder
 out
