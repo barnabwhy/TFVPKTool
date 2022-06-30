@@ -3,7 +3,7 @@ A typescript library for reading Respawn VPK archives.
 
 ## Features
 
-### **VPK reading**
+### VPK reading
 The VPK class allows for reading of `_dir.vpk` files, parsing their trees and reading files from archive VPKs referenced within them.
 
 The primary use of the VPK class is reading directory trees.
@@ -23,7 +23,7 @@ const VPK = require("./dist/vpk").default;
 let vpk = new VPK(vpkDirPath);
 vpk.readTree();
 ```
-### **VPK file reading**
+### VPK file reading
 The VPK class is capable of decompressing compressed files (using a native LZHAM addon), comparing CRC32 values on read files (except audio), and adding correct headers to `.wav` files (by reading `.cam` files) so that they can be played back.
 
 *For multi-threaded file reading to disk use VPKCopy.*
@@ -44,7 +44,7 @@ const VPK = require("./dist/vpk").default;
 await vpk.readFile(searchPath);
 ```
 
-### **VPK file copying**
+### VPK file copying
 The VPKCopy class is used for multi-threaded copying of files from the VPK to the file system.
 
 The method VPKCopy.copy reads all file paths in the array passed and writes them to outPath/filePath.
