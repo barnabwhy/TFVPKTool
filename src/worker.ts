@@ -1,4 +1,4 @@
-import VPK from "./vpk";
+import { VPK } from "./vpk";
 const fs = require('fs').promises;
 
 const { workerData, parentPort } = require("worker_threads");

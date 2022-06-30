@@ -219,7 +219,7 @@ interface VPKReadHandleList {
     [key: string]: any
 }
 
-export default class VPK {
+export class VPK {
     directoryPath: string;
 
     errors: string[] = [];

@@ -1,17 +1,10 @@
-import VPKCopy from "./src/reader";
-import VPK from "./src/vpk";
-
-var clui = require("clui");
-var thisProgressBar = new clui.Progress(50);
-
-let log = require("log-with-statusbar")({
-    initialStatusTextArray: [thisProgressBar.update(0, 100)]
-});
+import { VPK, VPKCopy, VPKCopyProgress } from "./src";
 
 (async () => {
     let startTime = Date.now();
 
-    const vpkPath = "D:\\SteamLibrary\\steamapps\\common\\Titanfall\\vpk\\englishclient_mp_common.bsp.pak000_dir.vpk";
+    const vpkName = "englishclient_mp_common.bsp.pak000_dir.vpk";
+    const vpkPath = "D:\\SteamLibrary\\steamapps\\common\\Titanfall\\vpk\\" + vpkName;
     let vpk = new VPK(vpkPath);
     vpk.readTree();
     const files = Object.keys(vpk.tree.files).filter(f => f.startsWith("sound/campaign"));
@@ -19,15 +12,13 @@ let log = require("log-with-statusbar")({
 
     let copier = new VPKCopy(vpkPath, 16);
 
-    copier.on("progress", (data: any) => {
-        log.info(`${data.current}/${data.total}\t | Worker ${("0"+data.workerIdx).slice(-2)} |\tCopying "${data.file}"`)
-        log.setStatusBarText([thisProgressBar.update(data.current - 1, data.total)]);
+    copier.on("progress", (data: VPKCopyProgress) => {
+        console.log(`${data.current}/${data.total}\t | Worker ${("0"+data.workerIdx).slice(-2)} |\tCopying "${data.file}"`)
     });
 
     await copier.copy(files, outPath);
 
-    log.disableStatusBar();
-
     copier.close();
-    log.info(`Whole operation took: ${Date.now() - startTime}ms`)
+
+    console.log(`Whole operation took: ${Date.now() - startTime}ms`)
 })();

@@ -1,7 +1,14 @@
 const { Worker } = require('worker_threads');
-const events = require('events');
+const { EventEmitter } = require('events');
 
-class CopyWorker extends events.EventEmitter {
+export interface VPKCopyProgress {
+    workerIdx: number,
+    file: string,
+    current: number,
+    total: number
+}
+
+class CopyWorker extends EventEmitter {
     private self: (typeof Worker);
 
     vpkPath: string;
@@ -34,7 +41,7 @@ enum VPKCopyMode {
     COPY = 1
 }
 
-export default class VPKCopy extends events.EventEmitter {
+export class VPKCopy extends EventEmitter {
     workers: CopyWorker[];
 
     vpkPath: string;

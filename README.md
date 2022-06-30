@@ -31,14 +31,14 @@ The VPK.readFile method reads individual files to memory and is capable of decom
 **Examples:**
 ```ts
 // ts
-import VPK from "./src/vpk";
+import { VPK } from "./src";
 
 // vpk: VPK = new VPK(vpkDirPath)
 await vpk.readFile(searchPath);
 ```
 ```js
 // node.js
-const VPK = require("./dist/vpk").default;
+const { VPK } = require("./dist");
 
 // vpk = new VPK(vpkDirPath)
 await vpk.readFile(searchPath);
@@ -54,12 +54,12 @@ VPKCopy acts as an easy wrapper for loading and reading multiple files using the
 **Examples:**
 ```ts
 // ts
-import VPKCopy from "./src/reader";
+import { VPKCopy, VPKCopyProgress } from "./src";
 
 // vpkPath: string, threads: number
 let copier: VPKCopy = new VPKCopy(vpkPath, threads);
 
-copier.on("progress", (data: any) => {
+copier.on("progress", (data: VPKCopyProgress) => {
     console.log(`${data.current}/${data.total}\t | Worker ${("0"+data.workerIdx).slice(-2)} |\tCopying "${data.file}"`)
 });
 
@@ -72,9 +72,9 @@ console.log("Copying complete")
 ```
 ```js
 // node.js
-const VPKCopy = require("./dist/reader").default;
+const { VPKCopy } = require("./dist");
 
-let copier: VPKCopy = new VPKCopy(vpkPath, threads);
+let copier = new VPKCopy(vpkPath, threads);
 
 copier.on("progress", (data) => {
     console.log(`${data.current}/${data.total}\t | Worker ${("0"+data.workerIdx).slice(-2)} |\tCopying "${data.file}"`)
@@ -89,13 +89,23 @@ console.log("Copying complete")
 
 ## Compiling TFVPKTool
 Run the following:
-```
+```console
 npm install
 npm run compile
 ```
 You should have a compiled build in `./dist`
 
 If just running with ts-node (`npm start`) compiling is unnecessary but `npm install` is.
+
+## Importing TFVPKTool
+```js
+// commonjs
+const { VPK, VPKCopy } = require("./dist");
+
+// es6
+import { VPK, VPKCopy } from "./dist"
+```
+*Note that VPK and VPKCopy can also be individually imported from `./dist/vpk` and `./dist/reader` respectively.*
 
 ----
 
