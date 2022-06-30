@@ -13,12 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "19.0.6",
     "node-addon-api": "^5.0.0",
     "ts-node": "^10.8.1"
-  },
-  "dependencies": {
-    "clui": "^0.3.6",
-    "log-with-statusbar": "^1.2.0"
   }
 }
