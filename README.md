@@ -2,7 +2,7 @@
 A typescript library for reading Respawn VPK archives.
 
 ## Features
-----
+
 ### **VPK reading**
 The VPK class allows for reading of `_dir.vpk` files, parsing their trees and reading files from archive VPKs referenced within them.
 
