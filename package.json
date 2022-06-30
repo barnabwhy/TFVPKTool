@@ -1,12 +1,12 @@
 {
   "name": "tfvpktool",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "postinstall": "cd src && node-gyp configure build",
     "cli": "ts-node cli_test.ts",
-    "compile": "tsc && xcopy /Y src\\build\\Release\\lzham.node dist\\build\\Release\\ && xcopy /Y LICENSE.md dist\\",
+    "compile": "tsc && xcopy /Y .\\src\\build\\Release\\lzham.node dist\\build\\Release\\ && xcopy /Y .\\LICENSE.md dist\\",
     "watch": "tsc -w",
     "start": "ts-node ."
   },

@@ -13,14 +13,15 @@ class CopyWorker extends EventEmitter {
 
     vpkPath: string;
 
-    constructor(vpkPath: string) {
+    constructor(vpkPath: string, patchWav: boolean = true) {
         super();
 
         this.vpkPath = vpkPath;
 
         this.self = new Worker(__dirname+'/worker.js', {
             workerData: {
-                vpkPath
+                vpkPath,
+                patchWav
             }
         });
         this.self.on("message", (msg: any) => { this.emit("message", msg) })
@@ -49,19 +50,21 @@ export class VPKCopy extends EventEmitter {
     files: string[] = [];
     fileCount: number = 0;
     threads: number;
+    patchWav: boolean;
 
     mode: VPKCopyMode = VPKCopyMode.NONE;
     taskResolve: Function | null = null;
 
-    constructor(vpkPath: string, threads: number = 8) {
+    constructor(vpkPath: string, threads: number = 8, patchWav: boolean = true) {
         super();
 
         this.vpkPath = vpkPath;
         this.threads = threads;
+        this.patchWav = patchWav;
 
         this.workers = [];
         for(let i = 0; i < threads; i++) {
-            let worker = new CopyWorker(vpkPath);
+            let worker = new CopyWorker(vpkPath, patchWav);
             worker.on("message", (msg: any) => { this.handleWorkerMsg(i, msg) })
             this.workers.push(worker);
         }

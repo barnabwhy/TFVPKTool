@@ -267,7 +267,7 @@ export class VPK {
         .then(() => { this.readHandles = {} })
     }
 
-    async readFile(path: string): Promise<Buffer | null> {
+    async readFile(path: string, patchWav: boolean = true): Promise<Buffer | null> {
         if(!this.isValid())
             throw new Error('VPK isn\'t valid')
 
@@ -336,7 +336,7 @@ export class VPK {
         }
 
         // Add wav headers
-        if(path.endsWith('.wav') && camEntry) {
+        if(patchWav && path.endsWith('.wav') && camEntry) {
             let checksum = file.subarray(4, 12);
 
             let firstByteIdx = 12;
@@ -379,7 +379,7 @@ export class VPK {
 
             file = Buffer.concat([wavHeader, file]);
 
-        } else if (crc32(file) !== entry.crc) {
+        } else if (!path.endsWith('.wav') && crc32(file) !== entry.crc) {
             throw new Error('CRC does not match');
         }
 

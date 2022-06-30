@@ -12,7 +12,7 @@ parentPort.on("message", async (msg: any) => {
     } else {
         if(msg.task == "copyFile") {
             const { file, destination } = msg;
-            const data = await vpk.readFile(file)
+            const data = await vpk.readFile(file, workerData.patchWav)
             await fs.mkdir(destination.substring(0,destination.lastIndexOf("/")+1), { recursive: true });
             await fs.writeFile(destination, data);
             parentPort.postMessage({ type: 1 });
