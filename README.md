@@ -11,14 +11,14 @@ The primary use of the VPK class is reading directory trees.
 **Examples:**
 ```ts
 // ts
-import VPK from "./src/vpk";
+import { VPK } from "./src";
 
 let vpk: VPK = new VPK(vpkDirPath);
 vpk.readTree();
 ```
 ```js
 // node.js
-const VPK = require("./dist/vpk").default;
+const { VPK } = require("./dist");
 
 let vpk = new VPK(vpkDirPath);
 vpk.readTree();
