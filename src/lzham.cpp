@@ -48,7 +48,7 @@ namespace lzham {
         lzham_uint32 crc32;
 
         uint8_t* dst = new uint8_t[dstLen];
-        lzham_decompress_status_t res = lzham_decompress_memory(&tflzham_decompress_params, dst, &dstLen, src, srcLen, &adler32, &crc32);
+        lzham_decompress_memory(&tflzham_decompress_params, dst, &dstLen, src, srcLen, &adler32, &crc32);
 
         // return Napi::Number::New(env, res);
 
