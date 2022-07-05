@@ -1,11 +1,11 @@
-import ReadBuffer from "./buffer";
+import { ReadBuffer } from "./buffer";
 const fs = require('fs');
 
 class CAMEntry {
     magic: number = NaN;	// should be 00 1A DE C4
     originalSize: number = NaN;
     compressedSize: number = NaN;
-    bitrate: number = NaN;
+    sampleRate: number = NaN;
     channels: number = NaN;
     sampleCount: number = NaN;
     headerSize: number = NaN;
@@ -15,7 +15,7 @@ class CAMEntry {
         this.magic = r.readUInt32();
         this.originalSize = r.readUInt32();
         this.compressedSize = r.readUInt32();
-        this.bitrate = r.readUInt24();
+        this.sampleRate = r.readUInt24();
         this.channels = r.readUInt8();
         this.sampleCount = r.readUInt32();
         this.headerSize = r.readUInt32();
@@ -23,7 +23,7 @@ class CAMEntry {
     }
 }
 
-export default class CAM {
+export class CAM {
     entries: CAMEntry[] = [];
     hasRead: boolean = false;
 
@@ -45,5 +45,6 @@ export default class CAM {
             if(entry.magic == 3302889984)
                 this.entries.push(entry);
         }
+        this.hasRead = true;
     }
 }
