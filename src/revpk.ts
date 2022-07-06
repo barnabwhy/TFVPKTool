@@ -454,11 +454,9 @@ export class VPatcher extends VPacker {
 
         fs.writeFileSync(vpkPath, Buffer.concat([headerBuffer, dirBuffer]));
         let archivePath = stripPakLang(vpkPath).replace("_dir", "_"+("000"+this.archiveIndex).slice(-3));
-        console.log(archivePath);
         fs.writeFileSync(archivePath, archiveBuffer);
         if(this.camEntries.length > 0) {
             let camPath = stripPakLang(vpkPath).replace("_dir", "_"+("000"+this.archiveIndex).slice(-3)) + ".cam";
-            console.log(camPath);
             fs.writeFileSync(camPath, camBuffer);
         }
     }
