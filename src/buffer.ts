@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-export default class ReadBuffer {
+export class ReadBuffer {
     private offset: number = 0;
 
     private buffer: Buffer;
@@ -82,6 +82,12 @@ export default class ReadBuffer {
         this.offset = termninatorIndex + 1;
         return ret;
     }
+    readStringLen(length: number): string {
+        let termninatorIndex: number = Math.min(this.buffer.indexOf('\0', this.offset), this.offset+length)
+        let ret: string = this.buffer.subarray(this.offset, termninatorIndex).toString()
+        this.offset += length;
+        return ret;
+    }
 
     skip(bytes: number) {
         this.offset += bytes;
@@ -94,4 +100,82 @@ export default class ReadBuffer {
     }
 }
 
-DataView.prototype.getBigUint64
+export class WriteBuffer {
+    private offset: number = 0;
+
+    private buffer: Buffer;
+    
+    constructor(lengthOrBuffer: number | Buffer) {
+        if(typeof lengthOrBuffer == 'number') {
+            this.buffer = Buffer.alloc(lengthOrBuffer);
+        } else {
+            this.buffer = Buffer.alloc(lengthOrBuffer.byteLength);
+            lengthOrBuffer.copy(this.buffer);
+        }
+        this.offset = 0;
+    }
+
+    writeInt8(n: number) {
+        this.buffer.writeInt8(n, this.offset)
+        this.offset += 1;
+    }
+    writeUInt8(n: number) {
+        this.buffer.writeUInt8(n, this.offset)
+        this.offset += 1;
+    }
+    writeInt16(n: number) {
+        this.buffer.writeInt16LE(n, this.offset)
+        this.offset += 2;
+    }
+    writeUInt16(n: number) {
+        this.buffer.writeUInt16LE(n, this.offset)
+        this.offset += 2;
+    }
+    writeInt24(n: number) {
+        this.buffer.writeIntLE(n, this.offset, 3)
+        this.offset += 3;
+    }
+    writeUInt24(n: number) {
+        this.buffer.writeUIntLE(n, this.offset, 3)
+        this.offset += 3;
+    }
+    writeInt32(n: number) {
+        this.buffer.writeInt32LE(n, this.offset)
+        this.offset += 4;
+    }
+    writeUInt32(n: number) {
+        this.buffer.writeUInt32LE(n, this.offset)
+        this.offset += 4;
+    }
+    writeUInt64(n: number) {
+        let hi = Math.floor(n/2**32);
+        let lo = (n & 0xffffffff) >>> 0;
+        this.buffer.writeUInt32LE(hi, this.offset+4)
+        this.buffer.writeUInt32LE(lo, this.offset)
+        this.offset += 8;
+    }
+    writeBuffer(buf: Buffer) {
+        buf.copy(this.buffer, this.offset);
+        this.offset += buf.length;
+    }
+
+    skip(bytes: number) {
+        this.offset += bytes;
+    }
+    setOffset(bytes: number) {
+        this.offset = bytes;
+    }
+    tell(): number {
+        return this.offset;
+    }
+
+    get length() {
+        return this.buffer.length;
+    }
+
+    getBuffer() {
+        let buf = Buffer.alloc(this.buffer.length);
+        this.buffer.copy(buf);
+        return buf;
+    }
+}

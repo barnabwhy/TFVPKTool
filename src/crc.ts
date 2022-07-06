@@ -3,7 +3,7 @@ const crcTable: number[] = [
 	0xedb88320, 0xf00f9344, 0xd6d6a3e8, 0xcb61b38c, 0x9b64c2b0, 0x86d3d2d4, 0xa00ae278, 0xbdbdf21c,
 ];
 
-export default function crc32(buf: Buffer) {
+export function crc32(buf: Buffer) {
     var crc = 0 ^ (-1);
 
     for (var i = 0; i < buf.byteLength; i++ ) {
