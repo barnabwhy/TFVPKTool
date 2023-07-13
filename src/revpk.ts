@@ -236,7 +236,7 @@ export class VPacker {
             if(extension == "wav")
                 loadFlags = EPackedLoadFlags.LOAD_VISIBLE | EPackedLoadFlags.LOAD_CACHE;
             if(extension == "acache")
-                loadFlags = 1281;
+                loadFlags = EPackedLoadFlags.LOAD_VISIBLE | EPackedLoadFlags.LOAD_CACHE | EPackedLoadFlags.LOAD_ACACHE_UNK0; //1281
 
             let filePart = new VPKFilePart(partBuf, loadFlags, EPackedTextureFlags.TEXTURE_NONE, partBuf.length, length);
             fileParts.push(filePart);

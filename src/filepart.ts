@@ -5,6 +5,7 @@ export enum EPackedLoadFlags
 	LOAD_NONE,
 	LOAD_VISIBLE      = 1 << 0,  // FileSystem visibility?
 	LOAD_CACHE        = 1 << 8,  // Only set for assets not stored in the depot directory.
+	LOAD_ACACHE_UNK0  = 1 << 10, // Acache uses this!!!
 	LOAD_TEXTURE_UNK0 = 1 << 18,
 	LOAD_TEXTURE_UNK1 = 1 << 19,
 	LOAD_TEXTURE_UNK2 = 1 << 20,
