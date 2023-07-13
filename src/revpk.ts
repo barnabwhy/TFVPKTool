@@ -228,9 +228,9 @@ export class VPacker {
 
             let partBuf = file.subarray(filePartOffset, filePartOffset+length);
 
-            // if(length >= COMPRESSION_THRESHOLD && COMPRESSION_EXCLUDED_TYPES.indexOf(extension) == -1) {
-            //     partBuf = lzham.compress(partBuf);
-            // }
+            if(length >= COMPRESSION_THRESHOLD && COMPRESSION_EXCLUDED_TYPES.indexOf(extension) == -1) {
+                partBuf = lzham.compress(partBuf);
+            }
 
             let loadFlags = EPackedLoadFlags.LOAD_VISIBLE;
             if(extension == "wav")
