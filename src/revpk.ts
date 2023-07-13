@@ -382,6 +382,16 @@ export class VPatcher extends VPacker {
         this.oldEntries = [];
         this.vpk = new VPK(vpkPath);
         this.vpk.readTree();
+    
+        if(this.vpk.files.includes("sound/wav.acache")) {
+            this.readAcache();
+        }
+    }
+
+    async readAcache() {
+        let buf = await this.vpk.readFile("sound/wav.acache");
+        if(buf)
+            this.acache = new Acache(buf);
     }
 
     async remove(path: string) {
@@ -404,24 +414,17 @@ export class VPatcher extends VPacker {
         for(const entry of this.newEntries) {
             let oldEntryIdx = this.oldEntries.findIndex(e => e.path == entry.path);
             if(oldEntryIdx != -1) {
-                if(entry.extension == "wav\0" && this.vpk.files.includes("sound/wav.acache")) {
-                    if(!this.acache) {
-                        let buf = await this.vpk.readFile("sound/wav.acache");
-                        if(buf)
-                            this.acache = new Acache(buf);
-                    }
-                    if(this.acache) {
-                        let acacheEntryIdx = this.acache?.entries.findIndex(a => a.path == entry.path);
-                        if(acacheEntryIdx != -1) {
-                            let acacheEntry = this.acache?.entries[acacheEntryIdx];
-                            let camEntry = this.camEntries.find(c => c.path == entry.path);
-                            if(camEntry) {
-                                acacheEntry.blockCount = camEntry.channels * camEntry.sampleCount;
-                                acacheEntry.channels = camEntry.channels;
-                                acacheEntry.sampleDepth = camEntry.sampleDepth;
-                            }
-                            this.acache.entries[acacheEntryIdx] = acacheEntry;
+                if(entry.extension == "wav\0" && this.acache) {
+                    let acacheEntryIdx = this.acache?.entries.findIndex(a => a.path == entry.path);
+                    if(acacheEntryIdx != -1) {
+                        let acacheEntry = this.acache?.entries[acacheEntryIdx];
+                        let camEntry = this.camEntries.find(c => c.path == entry.path);
+                        if(camEntry) {
+                            acacheEntry.blockCount = camEntry.channels * camEntry.sampleCount;
+                            acacheEntry.channels = camEntry.channels;
+                            acacheEntry.sampleDepth = camEntry.sampleDepth;
                         }
+                        this.acache.entries[acacheEntryIdx] = acacheEntry;
                     }
                 }
             }
