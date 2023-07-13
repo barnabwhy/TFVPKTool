@@ -93,7 +93,7 @@ export class VPKCopy extends EventEmitter {
 
     copy(files: string[], outPath: string): Promise<void> {
         return new Promise(resolve => {
-            this.files = files;
+            this.files = [...files];
             this.fileCount = files.length
             this.outPath = outPath
 
