@@ -28,7 +28,7 @@ namespace lzham {
         lzham_uint32 adler32;
         lzham_uint32 crc32;
 
-        static uint8_t* dst = new uint8_t[dstLen];
+        uint8_t* dst = new uint8_t[dstLen];
 
         lzham_compress_memory(&tflzham_compress_params, dst, &dstLen, src, srcLen, &adler32, &crc32);
 
