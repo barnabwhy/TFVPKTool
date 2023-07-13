@@ -45,7 +45,7 @@ function constructCamData(file: Buffer, path: string): PartialCAMEntry {
         headerSize: 44,
         path
     } as PartialCAMEntry;
-    
+
     return camData;
 }
 
@@ -57,7 +57,7 @@ function stripWavHeaders(file: Buffer): Buffer {
 
         headerBuffer.writeUInt32LE(checksum1, 4);
         headerBuffer.writeUInt32LE(checksum2, 8);
-        
+
         headerBuffer.copy(file);
     }
     return file;
@@ -275,10 +275,10 @@ export class VPacker {
 
             w.writeUInt32(entry.crc); // crc
             w.writeUInt16(entry.preloadBytes) // preloadBytes
-            
+
             for(const filePart of entry.fileParts) {
                 w.writeUInt16(filePart.archiveIndex == undefined ? this.archiveIndex : filePart.archiveIndex);
-                
+
                 w.writeUInt16(filePart.loadFlags);
                 w.writeUInt32(filePart.textureFlags);
                 w.writeUInt64(filePart.entryOffset);
@@ -353,7 +353,7 @@ export class VPacker {
     writeVPK(vpkPath: string) {
         this.archiveIndex = 999;
         this.entries = this.entries.sort((a, b) => (a.extension + a.directory).localeCompare(b.extension + b.directory))
-        
+
         const archiveBuffer = this.createArchive();
         const camBuffer = this.createCam();
 
@@ -361,9 +361,11 @@ export class VPacker {
         const headerBuffer = this.createHeader(dirBuffer.length);
 
         fs.writeFileSync(vpkPath, Buffer.concat([headerBuffer, dirBuffer]));
-        fs.writeFileSync(vpkPath.replace("_dir", "_"+("000"+this.archiveIndex).slice(-3)), archiveBuffer);
+        let archivePath = stripPakLang(vpkPath).replace("_dir", "_"+("000"+this.archiveIndex).slice(-3));
+        fs.writeFileSync(archivePath, archiveBuffer);
         if(this.camEntries.length > 0) {
-            fs.writeFileSync(vpkPath.replace("_dir", "_"+("000"+this.archiveIndex).slice(-3)) + ".cam", camBuffer);
+            let camPath = stripPakLang(vpkPath).replace("_dir", "_"+("000"+this.archiveIndex).slice(-3)) + ".cam";
+            fs.writeFileSync(camPath, camBuffer);
         }
     }
 }
@@ -377,12 +379,12 @@ export class VPatcher extends VPacker {
 
     constructor(vpkPath: string) {
         super();
-        
+
         this.newEntries = [];
         this.oldEntries = [];
         this.vpk = new VPK(vpkPath);
         this.vpk.readTree();
-    
+
         if(this.vpk.files.includes("sound/wav.acache")) {
             this.readAcache();
         }
@@ -399,7 +401,7 @@ export class VPatcher extends VPacker {
         if(idx != -1) {
             this.entries = this.entries.splice(idx, 1);
         }
-        
+
         if(this.vpk.tree.files[path]) {
             delete this.vpk.tree.files[path];
         }
