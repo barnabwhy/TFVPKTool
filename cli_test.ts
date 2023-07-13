@@ -1,10 +1,10 @@
-import { VPK, VPKCopy, VPKCopyProgress } from "./src";
+import { VPK, VPKCopy, VPKCopyProgress, VPacker } from "./src";
 
 (async () => {
     let startTime = Date.now();
 
     const vpkName = "englishclient_mp_common.bsp.pak000_dir.vpk";
-    const vpkPath = "D:\\SteamLibrary\\steamapps\\common\\Titanfall\\vpk\\" + vpkName;
+    const vpkPath = "F:\\SteamLibrary\\steamapps\\common\\Titanfall\\vpk\\" + vpkName;
     let vpk = new VPK(vpkPath);
     vpk.readTree();
     const files = Object.keys(vpk.tree.files).filter(f => f.startsWith("sound/campaign"));
@@ -20,5 +20,18 @@ import { VPK, VPKCopy, VPKCopyProgress } from "./src";
 
     copier.close();
 
-    console.log(`Whole operation took: ${Date.now() - startTime}ms`)
+    console.log(`Extracting took: ${Date.now() - startTime}ms`)
+
+    startTime = Date.now();
+
+    const newVpkName = "englishclient_audio_campaign.bsp.pak000_dir.vpk";
+    let revpk = new VPacker();
+    for (const file of files) {
+        console.log(`Adding file ${outPath}/${file}`);
+        await revpk.addFile(outPath + '/' + file, file)
+    }
+
+    revpk.writeVPK(outPath + '/' + newVpkName);
+
+    console.log(`Packing took: ${Date.now() - startTime}ms`)
 })();
