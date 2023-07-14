@@ -3,9 +3,14 @@ import { CAM } from "./cam";
 import { VPKHeader } from "./header";
 import { VPKTree } from "./tree";
 import { stripPakLang } from "./common";
+import { PassThrough, Readable } from "stream";
 
 const fs = require('fs');
 const lzham = require('./build/Release/lzham.node')
+import ffmpeg from '@ffmpeg-installer/ffmpeg';
+import FFmpeg from 'fluent-ffmpeg';
+FFmpeg.setFfmpegPath(ffmpeg.path);
+
 
 interface VPKCamList {
     [key: string]: CAM
@@ -52,7 +57,7 @@ export class VPK {
         if(this.tree instanceof VPKTree)
             this.tree.read(this.directoryPath);
     }
-    
+
     get files() {
         return Object.keys(this.tree instanceof VPKTree ? this.tree.files : []);
     }
@@ -62,7 +67,7 @@ export class VPK {
         .then(() => { this.readHandles = {} })
     }
 
-    async readFile(path: string, patchWav: boolean = true): Promise<Buffer | null> {
+    async readFile(path: string, patchWav: boolean = true, convertWavToOgg: boolean = false): Promise<Buffer | null> {
         if(!this.isValid())
             throw new Error('VPK isn\'t valid')
 
@@ -102,7 +107,7 @@ export class VPK {
 
                 let fileIndex = ('000' + part.archiveIndex).slice(-3);
                 let archivePath = stripPakLang(this.directoryPath).replace(/_dir\.vpk$/, '_' + fileIndex + '.vpk');
-                
+
                 let buf: Buffer = Buffer.alloc(part.entryLength)
 
                 if(!this.readHandles[archivePath])
@@ -124,7 +129,7 @@ export class VPK {
                         newCam.read()
                         this.cams[archivePath] = newCam;
                     }
-                    
+
                     camEntry = this.cams[archivePath].entries.find(e => e.vpkContentOffset == part.entryOffset);
                 }
             }
@@ -175,6 +180,32 @@ export class VPK {
 
             file = Buffer.concat([wavHeader, file]);
 
+            if(convertWavToOgg) {
+                file = await new Promise(resolve => {
+                    let firstStreamEnded = false;
+                    let bufferStream = new PassThrough();
+                    FFmpeg(Readable.from([file], { objectMode: false }))
+                        .inputFormat('wav')
+                        .audioChannels(channels)
+                        .audioBitrate('160k')
+                        .outputFormat('ogg')
+                        .on('error', () => {
+                            const outputBuffer = Buffer.concat(buffers);
+                            resolve(outputBuffer);
+                        })
+                        .pipe(bufferStream);
+
+                    // Read the passthrough stream
+                    const buffers: Buffer[] = [];
+                    bufferStream.on('data', function (buf) {
+                        buffers.push(buf);
+                    });
+                    bufferStream.on('end', function () {
+                        const outputBuffer = Buffer.concat(buffers);
+                        resolve(outputBuffer);
+                    });
+                })
+            }
         } else if (!path.endsWith('.wav') && crc32(file) !== entry.crc) {
             throw new Error('CRC does not match');
         }

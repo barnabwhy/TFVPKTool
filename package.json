@@ -16,5 +16,10 @@
   "devDependencies": {
     "node-addon-api": "^5.0.0",
     "ts-node": "^10.8.1"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@types/fluent-ffmpeg": "^2.1.21",
+    "fluent-ffmpeg": "^2.1.2"
   }
 }

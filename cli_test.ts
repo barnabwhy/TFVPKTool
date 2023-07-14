@@ -12,7 +12,7 @@ import { VPK, VPKCopy, VPKCopyProgress, VPacker } from "./src";
     const files = Object.keys(vpk.tree.files).filter(f => f.startsWith("sound/campaign") || f.startsWith("resource"));
     const outPath = "./out"
 
-    let copier = new VPKCopy(vpkPath, 16);
+    let copier = new VPKCopy(vpkPath, 16, true, true);
 
     copier.on("progress", (data: VPKCopyProgress) => {
         console.log(`${data.current}/${data.total}\t | Worker ${("0"+data.workerIdx).slice(-2)} |\tCopying "${data.file}"`)

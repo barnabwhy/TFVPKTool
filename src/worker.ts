@@ -11,8 +11,10 @@ parentPort.on("message", async (msg: any) => {
         parentPort.close();
     } else {
         if(msg.task == "copyFile") {
-            const { file, destination } = msg;
-            const data = await vpk.readFile(file, workerData.patchWav)
+            let { file, destination } = msg;
+            if(workerData.convertWavToOgg && destination.endsWith('.wav'))
+                destination = destination.replace(/\.wav$/, '.ogg');
+            const data = await vpk.readFile(file, workerData.patchWav, workerData.convertWavToOgg)
             await fs.mkdir(destination.substring(0,destination.lastIndexOf("/")+1), { recursive: true });
             await fs.writeFile(destination, data);
             parentPort.postMessage({ type: 1 });
