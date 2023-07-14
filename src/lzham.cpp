@@ -32,7 +32,7 @@ namespace lzham {
 
         lzham_compress_memory(&tflzham_compress_params, dst, &dstLen, src, srcLen, &adler32, &crc32);
 
-        return Napi::Buffer<uint8_t>::NewOrCopy(env, dst, dstLen);
+        return Napi::Buffer<uint8_t>::Copy(env, dst, dstLen);
     }
 
     Napi::Value decompress(const Napi::CallbackInfo& info) {
@@ -49,7 +49,7 @@ namespace lzham {
         uint8_t* dst = new uint8_t[dstLen];
         lzham_decompress_memory(&tflzham_decompress_params, dst, &dstLen, src, srcLen, &adler32, &crc32);
 
-        return Napi::Buffer<uint8_t>::NewOrCopy(env, dst, dstLen);
+        return Napi::Buffer<uint8_t>::Copy(env, dst, dstLen);
     }
 
     Napi::Object init(Napi::Env env, Napi::Object exports) {
